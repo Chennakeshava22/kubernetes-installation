@@ -71,14 +71,9 @@
       state: directory
       mode: '0755'
 
-  - name: Download Kubernetes repo GPG key
-    get_url:
-      url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
-      dest: /tmp/kubernetes-apt-key.asc
-      mode: '0644'
-  - name: Convert Kubernetes GPG key to binary (dearmor)
+  - name: Download and install Kubernetes GPG key
     shell: |
-      gpg --dearmor < /tmp/kubernetes-apt-key.asc > /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     args:
       creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
