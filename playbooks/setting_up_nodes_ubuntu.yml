@@ -79,7 +79,7 @@
     blockinfile:
      path: /etc/apt/sources.list.d/kubernetes.list
      block: |
-       deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+       deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /
 
   - name: updating cache
     apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
