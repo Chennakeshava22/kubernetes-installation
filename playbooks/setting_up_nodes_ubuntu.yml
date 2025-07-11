@@ -77,9 +77,11 @@
       dest: /tmp/kubernetes-apt-key.asc
       mode: '0644'
   - name: Convert Kubernetes GPG key to binary (dearmor)
-    command: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/kubernetes-apt-key.asc
+    shell: |
+      gpg --dearmor < /tmp/kubernetes-apt-key.asc > /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     args:
       creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
 
   - name: Adding repository details in Kubernetes repo file.
     blockinfile:
