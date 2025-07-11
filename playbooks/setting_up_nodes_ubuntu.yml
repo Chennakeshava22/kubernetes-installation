@@ -4,6 +4,10 @@
   - env_variables_ubuntu
 
   tasks:
+  - name: Remove any existing Kubernetes repo file before container runtime setup
+    file:
+      path: /etc/apt/sources.list.d/kubernetes.list
+      state: absent
 
   # Creating runtime
   - name: Removing packages
