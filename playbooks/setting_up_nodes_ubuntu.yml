@@ -79,6 +79,7 @@
   - name: Adding repository details in Kubernetes repo file.
     blockinfile:
       path: /etc/apt/sources.list.d/kubernetes.list
+      create: yes
       block: |
         deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /
 
