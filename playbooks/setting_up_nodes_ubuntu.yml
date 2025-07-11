@@ -73,8 +73,12 @@
   - name: Download Kubernetes repo GPG key
     get_url:
       url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
-      dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      dest: /tmp/kubernetes-apt-key.asc
       mode: '0644'
+  - name: Convert Kubernetes GPG key to binary (dearmor)
+    command: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/kubernetes-apt-key.asc
+    args:
+      creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
   - name: Adding repository details in Kubernetes repo file.
     blockinfile:
