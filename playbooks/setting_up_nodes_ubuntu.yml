@@ -4,6 +4,24 @@
   - env_variables_ubuntu
 
   tasks:
+  - name: Ensure /etc/apt/keyrings directory exists
+    file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: '0755'
+
+  - name: Download Kubernetes repo GPG key
+    get_url:
+      url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
+      dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      mode: '0644'
+
+  - name: Adding repository details in Kubernetes repo file.
+    blockinfile:
+      path: /etc/apt/sources.list.d/kubernetes.list
+      block: |
+        deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /
+
   # Creating runtime
   - name: Removing packages
     apt:
@@ -59,23 +77,6 @@
     with_items: "{{ container_runtime_services }}"
 
 # Kubernetes configuration
-  - name: Ensure /etc/apt/keyrings directory exists
-    file:
-      path: /etc/apt/keyrings
-      state: directory
-      mode: '0755'
-
-  - name: Download Kubernetes repo GPG key
-    get_url:
-      url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
-      dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-      mode: '0644'
-
-  - name: Adding repository details in Kubernetes repo file.
-    blockinfile:
-      path: /etc/apt/sources.list.d/kubernetes.list
-      block: |
-        deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /
  
 
   - name: updating cache
